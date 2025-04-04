@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Littafin Rabi'ul Abrar</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #pdfCanvas {
+            border: 1px solid black;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .controls {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Littafin Rabi'ul Abrar</h2>
+    
+    <div class="controls">
+        <button onclick="previousPage()">⬅️ Shafi Na Baya</button>
+        <span id="pageNumber">1</span> / <span id="totalPages">?</span>
+        <button onclick="nextPage()" style="Height: 50px;">Je Shafi Na Gaba ➡️</button>
+    </div>
+    
+    <canvas id="pdfCanvas"></canvas>
+    <div></div>
+
+    <script>
+        let pdfUrl = "rabiul abrar.pdf"; // Canza zuwa URL na PDF dinka
+        let pdfDoc = null,
+            pageNum = 1,
+            totalPages = 0,
+            scale = 1.5,
+            canvas = document.getElementById('pdfCanvas'),
+            ctx = canvas.getContext('2d');
+
+        pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+            pdfDoc = pdf;
+            totalPages = pdf.numPages;
+            document.getElementById('totalPages').textContent = totalPages;
+            renderPage(pageNum);
+        });
+
+        function renderPage(num) {
+            pdfDoc.getPage(num).then(page => {
+                const viewport = page.getViewport({ scale });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                page.render(renderContext);
+                document.getElementById('pageNumber').textContent = num;
+            });
+        }
+
+        function previousPage() {
+            if (pageNum <= 1) return;
+            pageNum--;
+            renderPage(pageNum);
+        }
+
+        function nextPage() {
+            if (pageNum >= totalPages) return;
+            pageNum++;
+            renderPage(pageNum);
+        }
+    </script>
+
+</body>
+</html>
