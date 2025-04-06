@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="ha">
 <head>
-	<script type="text/javascript" src="https://cdn.start.io/sdk.js"></script>
-<script type="text/javascript">
-  startio.initialize('203869447'); // Maimaita wannan tare da APP ID naka
-  startio.showBannerAd(); // Zaɓi nau'in talla (Banner, Interstitial, da dai sauransu)
-</script>
+	
     <link rel="manifest" href="/manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +23,69 @@
         .controls {
             margin: 10px;
         }
+	    /* Modal Styles */
+    #rewardModal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+    }
+
+    .modal-content {
+      position: relative;
+      background-color: #fff;
+      width: 90%;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    iframe {
+      width: 100%;
+      height: 650px;
+      border: none;
+    }
+
+    #countdown {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #000;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    #closeBtn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background-color: #ff4444;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: not-allowed;
+      opacity: 0.5;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    #closeBtn.active {
+      opacity: 1;
+      pointer-events: auto;
+      cursor: pointer;
+    }
     </style>
 </head>
 <body>
@@ -41,18 +100,16 @@
     
     <canvas id="pdfCanvas"></canvas>
 	<div id="startio-banner"></div>
-<script type="text/javascript">
-  startio.showBannerAd("startio-banner");
-</script>
-    <div><script type="text/javascript">
-	atOptions = {
-		'key' : '55d31a1935f8477fefb7a1cd40e3c82f',
-		'format' : 'iframe',
-		'height' : 50,
-		'width' : 320,
-		'params' : {}
-	};
-</script>
+<!-- The Modal -->
+<div id="rewardModal">
+  <div class="modal-content">
+    <div id="countdown">20</div>
+    <iframe src="https://koginsirri.netlify.app" id="adIframe"></iframe>
+    <button id="closeBtn" onclick="closeModal()">Close Ad</button>
+  </div>
+</div>
+    <div>
+	
 
 
     <script>
@@ -98,6 +155,45 @@
             renderPage(pageNum);
         }
     </script>
+<script>
+  let countdown = 20;
+  let countdownInterval;
+  let repeatInterval;
 
+  // Show modal function
+  function showRewardModal() {
+    document.getElementById("rewardModal").style.display = "block";
+    document.getElementById("closeBtn").classList.remove("active");
+    document.getElementById("countdown").innerText = countdown;
+
+    countdownInterval = setInterval(() => {
+      countdown--;
+      document.getElementById("countdown").innerText = countdown;
+      if (countdown <= 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("countdown").innerText = "Done";
+        document.getElementById("closeBtn").classList.add("active");
+      }
+    }, 1000);
+  }
+
+  // Close modal
+  function closeModal() {
+    document.getElementById("rewardModal").style.display = "none";
+    countdown = 20; // reset countdown
+  }
+
+  // Show first modal after 20s of entering site
+  setTimeout(() => {
+    showRewardModal();
+  }, 20000); // 20 seconds
+
+  // Repeat every 60s
+  setTimeout(() => {
+    repeatInterval = setInterval(() => {
+      showRewardModal();
+    }, 60000); // every 60 seconds
+  }, 20000); // wait 20s before starting repeat
+</script>
 </body>
 </html>
