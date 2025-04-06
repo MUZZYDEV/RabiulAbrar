@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="ha">
 <head>
+	<script type="text/javascript" src="https://cdn.start.io/sdk.js"></script>
+<script type="text/javascript">
+  startio.initialize('203869447'); // Maimaita wannan tare da APP ID naka
+  startio.showBannerAd(); // Zaɓi nau'in talla (Banner, Interstitial, da dai sauransu)
+</script>
     <link rel="manifest" href="/manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +40,10 @@
     </div>
     
     <canvas id="pdfCanvas"></canvas>
+	<div id="startio-banner"></div>
+<script type="text/javascript">
+  startio.showBannerAd("startio-banner");
+</script>
     <div><script type="text/javascript">
 	atOptions = {
 		'key' : '55d31a1935f8477fefb7a1cd40e3c82f',
